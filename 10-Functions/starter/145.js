@@ -1,0 +1,4 @@
+'use strict';
+
+///////////////////////////////////////
+// 145. More Closure Examples

@@ -33,6 +33,7 @@ BONUS TEST DATA 2: [1, 5, 3, 9, 6, 1]
 
 GOOD LUCK 😀
 */
+/*
 function isValidIntegerInRange(value, n) {
   // Check if it's a number and not NaN
   if (typeof value !== 'number' || Number.isNaN(value)) {
@@ -71,7 +72,13 @@ const poll = {
     } while (!isValidIntegerInRange(userInput, this.options.length - 1));
     console.log(userInput, this.replies[userInput]);
     this.replies[userInput] = this.replies[userInput] + 1 || 1;
+    this.displayResults();
     //console.log(this.replies);
+  },
+  displayResults: function (type = 'array') {
+    type === 'string'
+      ? console.log(...this.replies)
+      : console.log(this.replies);
   },
 };
 
@@ -81,8 +88,51 @@ document
 
 console.log(poll);
 
-3. Create a method 'displayResults' which displays the poll results. The method takes a string as an input (called 'type'), which can be either 'string' or 'array'. If type is 'array', simply display the results array as it is, using console.log(). This should be the default option. If type is 'string', display a string like "Poll results are 13, 2, 4, 1". 
+const testData1 = [5, 2, 3];
+const testData2 = [1, 5, 3, 9, 6, 1];
+*/
 
-const displayResults = function(type = 'array') {
-    (type === 'string')? console.log();
-}
+const poll = {
+  question: 'What is your favourite programming language?',
+  options: ['0: Javascript', '1: Python', '2: Rust', '3. C++'],
+  // this generates [0,0,0,0]  more in the next section
+  answers: new Array(4).fill(0),
+
+  registerNewAnswer() {
+    const answer = Number(
+      prompt(
+        `${this.question}\n${this.options.join('\n')}\n(Write option number)`
+      )
+    );
+    console.log(answer);
+    //Register answer
+    //Use case for short circuiting  this.answers[answer]++ will be evaluated(executed) only of previous conditions are true
+    typeof answer === 'number' &&
+      answer < this.answers.length &&
+      this.answers[answer]++;
+    this.displayResults();
+    this.displayResults('string');
+  },
+
+  displayResults(type = 'array') {
+    if (type === 'array') {
+      console.log(`Poll results are ${this.answers}`);
+    } else if (type === 'string') {
+      console.log(`Poll results are ${this.answers.join(', ')}`);
+    }
+  },
+};
+
+document
+  .querySelector('.poll')
+  .addEventListener('click', poll.registerNewAnswer.bind(poll));
+
+const testData1 = [5, 2, 3];
+const testData2 = [1, 5, 3, 9, 6, 1];
+
+// here we are using call method and creating an object on the fly with  property answers set to the test array.
+poll.displayResults.call({ answers: [5, 2, 3] }, 'string');
+poll.displayResults.call({ answers: [1, 5, 3, 9, 6, 1] }, 'string');
+
+poll.displayResults.call({ answers: [5, 2, 3] });
+poll.displayResults.call({ answers: [1, 5, 3, 9, 6, 1] });
