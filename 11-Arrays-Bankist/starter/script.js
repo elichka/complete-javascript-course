@@ -89,3 +89,16 @@ displayMovements(account1.movements);
 // const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 /////////////////////////////////////////////////
+const user = 'Elmira Hajiba Alimova';
+
+const createUserName = function (accounts) {
+  accounts.forEach(function (account) {
+    account.username = account.owner
+      .toLowerCase()
+      .split(' ')
+      .map(name => name[0])
+      .join('');
+  });
+};
+createUserName(accounts);
+console.log(accounts);
