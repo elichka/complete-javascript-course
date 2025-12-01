@@ -74,7 +74,12 @@ const displayMovements = function (movements) {
   });
 };
 
+const calcDisplayBalance = function (movements) {
+  const balance = movements.reduce((acc, mov) => acc + mov);
+  labelBalance.textContent = `${balance} €`;
+};
 displayMovements(account1.movements);
+calcDisplayBalance(account1.movements);
 
 /////////////////////////////////////////////////
 /////////////////////////////////////////////////
@@ -89,7 +94,7 @@ displayMovements(account1.movements);
 // const movements = [200, 450, -400, 3000, -650, -130, 70, 1300];
 
 /////////////////////////////////////////////////
-const user = 'Elmira Hajiba Alimova';
+//const user = 'Elmira Hajiba Alimova';
 
 const createUserName = function (accounts) {
   accounts.forEach(function (account) {
@@ -101,4 +106,6 @@ const createUserName = function (accounts) {
   });
 };
 createUserName(accounts);
-console.log(accounts);
+
+displayMovements(account1.movements);
+calcDisplayBalance(account1.movements);
