@@ -25,14 +25,20 @@ const calcAverageHumanAge = function (ages) {
   const humanAges = ages.map(dogAge =>
     dogAge <= 2 ? 2 * dogAge : 16 + dogAge * 4
   );
-  console.log(humanAges);
+  console.log('Human Ages: ', humanAges);
   const adultDogs = humanAges.filter(humanAge => humanAge >= 18);
   console.log('Adult Dogs: ', adultDogs);
-  const averageAge =
-    adultDogs.reduce((agg, age) => agg + age) / adultDogs.length;
-
+  // const averageAge =
+  //   adultDogs.reduce((agg, age) => agg + age) / adultDogs.length;
+  const averageAge = adultDogs.reduce(
+    (agg, age, i, arr) => agg + age / arr.length,
+    0
+  );
   console.log(`Average dog age in human ages is: ${averageAge}`);
+  return averageAge;
 };
 
-calcAverageHumanAge(dogAges1);
-calcAverageHumanAge(dogAges2);
+const avg1 = calcAverageHumanAge(dogAges1);
+const avg2 = calcAverageHumanAge(dogAges2);
+
+console.log(avg1, avg2);
