@@ -74,9 +74,9 @@ const displayMovements = function (movements) {
   });
 };
 
-const calcDisplayBalance = function (movements) {
-  const balance = movements.reduce((acc, mov) => acc + mov);
-  labelBalance.textContent = `${balance} €`;
+const calcDisplayBalance = function (acc) {
+  acc.balance = acc.movements.reduce((acc, mov) => acc + mov, 0);
+  labelBalance.textContent = `${acc.balance} €`;
 };
 
 const calcDisplaySummary = function (acc) {
@@ -126,6 +126,15 @@ const createUserName = function (accounts) {
   });
 };
 
+const updateUI = function (acc) {
+  //display balance
+  calcDisplayBalance(acc);
+  //display summary
+  calcDisplaySummary(acc);
+  //display movement
+  displayMovements(acc.movements);
+};
+
 createUserName(accounts);
 //console.log('Accounts Array: ', accounts);
 // event handler
@@ -148,14 +157,37 @@ btnLogin.addEventListener('click', function (e) {
     }!`;
 
     containerApp.style.opacity = 100;
-    //display balance
-    calcDisplayBalance(currentAccount.movements);
-    //display summary
-    calcDisplaySummary(currentAccount);
-    //display movement
-    displayMovements(currentAccount.movements);
+    updateUI(currentAccount);
 
     inputLoginUsername.value = inputLoginPin.value = '';
     inputLoginPin.blur();
+  }
+});
+
+btnTransfer.addEventListener('click', function (e) {
+  e.preventDefault();
+  const amount = Number(inputTransferAmount.value);
+  const receiverAccount = accounts.find(
+    acc => acc.username === inputTransferTo.value
+  );
+  inputTransferAmount.value = inputTransferTo.value = '';
+  console.log(amount, receiverAccount);
+  if (
+    amount > 0 &&
+    currentAccount.balance >= amount &&
+    receiverAccount &&
+    receiverAccount?.username !== currentAccount.username
+  ) {
+    console.log(
+      `receiverAccount?.username value is ${receiverAccount.username} and currentAccount.username is ${currentAccount.username}`
+    );
+    currentAccount.movements.push(-amount);
+    receiverAccount.movements.push(amount);
+    console.log(
+      `Withdrawing from ${currentAccount.owner} amount of ${amount} and transferring to ${receiverAccount.owner}`
+    );
+    updateUI(currentAccount);
+  } else {
+    console.log(`User not found or transfer is not possible. `);
   }
 });
