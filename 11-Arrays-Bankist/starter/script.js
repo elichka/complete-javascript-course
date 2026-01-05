@@ -68,7 +68,7 @@ const displayMovements = function (movements) {
     const html = `<div class="movements__row">
           <div class="movements__type movements__type--${type}">${i} ${type}</div>
     
-          <div class="movements__value">${mov}</div>
+          <div class="movements__value">${mov}€</div>
         </div>`;
     containerMovements.insertAdjacentHTML('afterbegin', html);
   });
@@ -189,5 +189,54 @@ btnTransfer.addEventListener('click', function (e) {
     updateUI(currentAccount);
   } else {
     console.log(`User not found or transfer is not possible. `);
+  }
+});
+
+// REQUEST LOAN
+btnLoan.addEventListener('click', function (e) {
+  e.preventDefault();
+  const amount = Number(inputLoanAmount.value);
+  if (amount > 0 && currentAccount.movements.some(mov => mov > amount / 10)) {
+    console.log(Number(inputLoanAmount.value));
+    // add movement to current account = to amount
+    currentAccount.movements.push(Number(inputLoanAmount.value));
+    updateUI(currentAccount);
+  }
+  inputLoanAmount.value = '';
+  inputLoanAmount.blur();
+});
+
+btnClose.addEventListener('click', function (e) {
+  e.preventDefault(e);
+
+  if (
+    currentAccount?.username === inputCloseUsername.value &&
+    currentAccount?.pin === Number(inputClosePin.value)
+  ) {
+    console.log(
+      `Current account ok to delete:  ${
+        currentAccount?.username === inputCloseUsername.value &&
+        currentAccount?.pin === Number(inputClosePin.value)
+      }`
+    );
+    const index = accounts.findIndex(
+      acc => acc.username === currentAccount.username
+    );
+    console.log(index);
+
+    //delete account
+    accounts.splice(index, 1);
+    console.log(accounts);
+    inputCloseUsername.value = inputClosePin.value = '';
+
+    // Hide UI
+    containerApp.style.opacity = 0;
+  } else {
+    console.log(
+      `Current account IS NOT ok to delete:  ${
+        currentAccount?.username === inputCloseUsername.value &&
+        currentAccount?.pin === Number(inputClosePin.value)
+      }`
+    );
   }
 });
