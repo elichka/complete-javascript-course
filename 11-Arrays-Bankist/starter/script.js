@@ -251,3 +251,15 @@ btnClose.addEventListener('click', function (e) {
     );
   }
 });
+
+// LECTURE 174. More Ways of Creating and Filling Arrays
+labelBalance.addEventListener('click', function () {
+  const movementsUI = Array.from(
+    document.querySelectorAll('.movements__value')
+  ).map(el => Number(el.textContent.replace('€', '')));
+
+  console.log(movementsUI);
+
+  const movementsUI2 = [...document.querySelectorAll('.movements__value')];
+  console.log(movementsUI2);
+});
